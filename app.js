@@ -9,7 +9,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/todos', (req, res, next) => {
+app.use(express.json());
+
+app.get('/api/todos', (req, res, next) => {
   const tasks = [
     {
       _id: '1',
@@ -18,6 +20,13 @@ app.use('/api/todos', (req, res, next) => {
     },
   ];
   res.status(200).json(tasks);
+});
+
+app.post('/api/add/todo', (req, res, next) => {
+  console.log(req.body);
+  res.status(201).json({
+    message: 'tache ajoutee'
+  });
 });
 
 
