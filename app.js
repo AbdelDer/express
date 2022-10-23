@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const app = express();
+const Task = require('./models/task');
 
 dotenv.config({ path: `.env.local`});
 
@@ -23,21 +24,18 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 app.get('/api/todos', (req, res, next) => {
-  const tasks = [
-    {
-      _id: '1',
-      title: 'tache 1',
-      description: 'description de la tache 1'
-    },
-  ];
-  res.status(200).json(tasks);
+  Task.find()
+    .then(tasks => res.status(200).json(tasks))
+    .catch(error => res.status(400).json({ error }));
 });
 
 app.post('/api/add/todo', (req, res, next) => {
-  console.log(req.body);
-  res.status(201).json({
-    message: 'tache ajoutee'
+  const task = new Task({
+    ...req.body
   });
+  task.save()
+    .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
+    .catch(error => res.status(400).json({ error }));
 });
 
 
