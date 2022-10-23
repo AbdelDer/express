@@ -38,5 +38,10 @@ app.post('/api/add/todo', (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 });
 
+app.get('/api/todo/:id', (req, res, next) => {
+  Task.findOne({ _id: req.params.id })
+    .then(task => res.status(200).json(task))
+    .catch(error => res.status(404).json({ error }));
+});
 
 module.exports = app;
